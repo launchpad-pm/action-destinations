@@ -108,7 +108,7 @@ const destination: DestinationDefinition<Settings> = {
   actions: {
     trackEvent,
     identifyUser,
-    groupIdentifyUser // NOTE: this will need to point to AWS if we want to use it
+    groupIdentifyUser
   }
 }
 

@@ -17,7 +17,7 @@ const identifyUser: ActionDefinition<Settings, Payload> = {
         '@path': '$.context.ip'
       }
     },
-    user_id: {
+    userId: {
       label: 'User ID',
       type: 'string',
       allowNull: true,
@@ -26,7 +26,7 @@ const identifyUser: ActionDefinition<Settings, Payload> = {
         '@path': '$.userId'
       }
     },
-    anonymous_id: {
+    anonymousId: {
       label: 'Anonymous ID',
       type: 'string',
       allowNull: true,
@@ -48,22 +48,24 @@ const identifyUser: ActionDefinition<Settings, Payload> = {
   perform: async (request, { payload, settings }) => {
     const apiServerUrl = getApiServerUrl(settings.apiRegion)
 
-    const responses = []
-    if (payload.anonymous_id) {
+    if (payload.anonymousId && !payload.traits) {
       const identifyEvent = {
         event: '$identify',
-        properties: {
-          $identified_id: payload.user_id,
-          $anon_id: payload.anonymous_id,
+        type: 'screen',
+        $set: {
+          $distinct_id: payload.userId,
+          $anonymous_id: payload.anonymousId,
           segment_source_name: settings.sourceName
-        }
+        },
+        distinct_id: payload.userId,
+        api_key: settings.apiSecret
       }
-
-      const identifyResponse = await request(`${apiServerUrl}`, {
+      const identifyResponse = await request(`${apiServerUrl}capture`, {
         method: 'post',
-        body: new URLSearchParams({ data: JSON.stringify(identifyEvent) })
+        json: identifyEvent
       })
-      responses.push(identifyResponse)
+
+      return identifyResponse
     }
 
     if (payload.traits && Object.keys(payload.traits).length > 0) {
@@ -81,21 +83,25 @@ const identifyUser: ActionDefinition<Settings, Payload> = {
         $last_name: payload.traits.lastName,
         $name: concatenatedName,
         $username: payload.traits.username,
-        $phone: payload.traits.phone
+        $phone: payload.traits.phone,
+        ...payload.traits
       }
       const data = {
-        $distinct_id: payload.user_id,
+        distinct_id: payload.userId,
         $ip: payload.ip,
-        $set: traits
+        $set: traits,
+        event: '$identify',
+        type: 'screen',
+        api_key: settings.apiSecret
       }
-
-      const engageResponse = request(`${apiServerUrl}/engage`, {
+      const identifyResponse = request(`${apiServerUrl}capture`, {
         method: 'post',
-        body: new URLSearchParams({ data: JSON.stringify(data) })
+        json: data
       })
-      responses.push(engageResponse)
+      console.log(data)
+
+      return identifyResponse
     }
-    return Promise.all(responses)
   }
 }
 

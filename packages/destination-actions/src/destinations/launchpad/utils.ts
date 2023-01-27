@@ -1,7 +1,7 @@
-// export enum ApiRegions {
-//   US = 'US 🇺🇸',
-//   EU = 'EU 🇪🇺'
-// }
+export enum ApiRegions {
+  US = 'US 🇺🇸',
+  EU = 'EU 🇪🇺'
+}
 
 // export enum StrictMode {
 //   ON = '1',
@@ -12,14 +12,14 @@ export function getConcatenatedName(firstName: unknown, lastName: unknown, name:
   return name ?? (firstName && lastName ? `${firstName} ${lastName}` : undefined)
 }
 
-export function getApiServerUrl(apiRegion: string | undefined) {
+export function getApiServerUrl(apiRegion: string | unknown) {
   if (apiRegion == ApiRegions.EU) {
-    return 'https://data.launchpad.pm/capture'
+    return 'https://data.launchpad.pm/'
   }
-  return 'https://data.launchpad.pm/capture'
+  return 'https://data.launchpad.pm/'
 }
 
-export function getBrowser(userAgent: string, vendor: string | undefined): string {
+export function getBrowser(userAgent: string, vendor: string | unknown): string {
   vendor = vendor || '' // vendor is undefined for at least IE9
   if (userAgent.includes(' OPR/')) {
     if (userAgent.includes('Mini')) {
@@ -45,7 +45,7 @@ export function getBrowser(userAgent: string, vendor: string | undefined): strin
     return 'UC Browser'
   } else if (userAgent.includes('FxiOS')) {
     return 'Firefox iOS'
-  } else if (vendor.includes('Apple')) {
+  } else if (vendor?.includes('Apple')) {
     if (userAgent.includes('Mobile')) {
       return 'Mobile Safari'
     }
@@ -65,7 +65,7 @@ export function getBrowser(userAgent: string, vendor: string | undefined): strin
   }
 }
 
-export function getBrowserVersion(userAgent: string, vendor: string | undefined) {
+export function getBrowserVersion(userAgent: string, vendor: string | unknown) {
   const browser = getBrowser(userAgent, vendor)
   const versionRegexs: { [browser: string]: RegExp } = {
     'Internet Explorer Mobile': /rv:(\d+(\.\d+)?)/,

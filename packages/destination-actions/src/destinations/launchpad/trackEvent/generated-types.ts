@@ -8,39 +8,23 @@ export interface Payload {
   /**
    * A distinct ID randomly generated prior to calling identify.
    */
-  anonymous_id?: string
+  anonymousId?: string
   /**
    * The distinct ID after calling identify.
    */
-  user_id?: string
+  userId?: string
   /**
    * The unique identifier of the group that performed this event.
    */
-  group_id?: string
+  groupId?: string
   /**
    * A random id that is unique to an event. Launchpad uses $insert_id to deduplicate events.
    */
-  insert_id?: string
+  messageId?: string
   /**
    * The timestamp of the event. Launchpad expects epoch timestamp in millisecond or second. Please note, Launchpad only accepts this field as the timestamp. If the field is empty, it will be set to the time Launchpad servers receive it.
    */
   time?: string | number
-  /**
-   * The name of your application.
-   */
-  app_name?: string
-  /**
-   * The namespace of your application.
-   */
-  app_namespace?: string
-  /**
-   * The current build of your application.
-   */
-  app_build?: string
-  /**
-   * The current version of your application.
-   */
-  app_version?: string
   /**
    * The name of the mobile operating system or browser that the user is using.
    */
@@ -70,22 +54,6 @@ export interface Payload {
    */
   device_model?: string
   /**
-   * Whether bluetooth is enabled.
-   */
-  bluetooth?: boolean
-  /**
-   * The carrier that the user is using.
-   */
-  carrier?: string
-  /**
-   * Whether cellular is enabled.
-   */
-  cellular?: boolean
-  /**
-   * Set to true if user’s device has an active, available Wifi connection, false if not.
-   */
-  wifi?: boolean
-  /**
    * The current country of the user.
    */
   country?: string
@@ -110,25 +78,9 @@ export interface Payload {
    */
   ip?: string
   /**
-   * Identifier for Advertiser. _(iOS)_
-   */
-  idfa?: string
-  /**
    * The full URL of the webpage on which the event is triggered.
    */
   url?: string
-  /**
-   * Width, in pixels, of the device screen.
-   */
-  screen_width?: number
-  /**
-   * Height, in pixels, of the device screen.
-   */
-  screen_height?: number
-  /**
-   * Pixel density of the device screen.
-   */
-  screen_density?: number
   /**
    * Referrer url
    */
@@ -140,13 +92,13 @@ export interface Payload {
   /**
    * An object of key-value pairs that represent additional data to be sent along with the event.
    */
-  event_properties?: {
+  properties?: {
     [k: string]: unknown
   }
   /**
    * An object of key-value pairs that represent additional data tied to the user.
    */
-  user_properties?: {
+  traits?: {
     [k: string]: unknown
   }
   /**

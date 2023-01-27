@@ -4,7 +4,7 @@ import type { Payload } from './generated-types'
 import { LaunchpadEvent } from '../launchpad-types'
 import { getApiServerUrl } from '../utils'
 import { getEventProperties } from './functions'
-import { eventProperties } from '../launchpad-properties'
+import { eventProperties } from './launchpad-properties'
 
 const getEventFromPayload = (payload: Payload, settings: Settings): LaunchpadEvent => {
   const event: LaunchpadEvent = {
@@ -18,16 +18,19 @@ const getEventFromPayload = (payload: Payload, settings: Settings): LaunchpadEve
 }
 
 const processData = async (request: RequestClient, settings: Settings, payload: Payload[]) => {
-  console.log(payload)
   const events = payload.map((value) => getEventFromPayload(value, settings))
-  const headers = { Authorization: `Bearer ${settings.apiSecret}` }
 
-  console.log(events)
+  let urlAddendum: string
+  if (payload.length === 1) {
+    urlAddendum = 'capture'
+  } else {
+    urlAddendum = 'batch'
+  }
+  const requestURL: string = `${getApiServerUrl(settings.apiRegion)}` + urlAddendum
 
-  return request(`${getApiServerUrl(settings.apiRegion)}`, {
+  return request(requestURL, {
     method: 'post',
-    json: events,
-    headers: headers
+    json: events
   })
 }
 
@@ -50,11 +53,11 @@ const trackEvent: ActionDefinition<Settings, Payload> = {
 
   perform: async (request, { settings, payload }) => {
     return processData(request, settings, [payload])
+  },
+  performBatch: async (request, { settings, payload }) => {
+    console.log(payload)
+    return processData(request, settings, payload)
   }
-  // performBatch: async (request, { settings, payload }) => {
-  //   console.log(payload)
-  //   return processData(request, settings, payload)
-  // },
 }
 
 export default trackEvent
