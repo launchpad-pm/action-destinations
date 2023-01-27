@@ -24,7 +24,7 @@ export interface Payload {
   /**
    * The timestamp of the event. Launchpad expects epoch timestamp in millisecond or second. Please note, Launchpad only accepts this field as the timestamp. If the field is empty, it will be set to the time Launchpad servers receive it.
    */
-  time?: string | number
+  timestamp?: string | number
   /**
    * The name of the mobile operating system or browser that the user is using.
    */
