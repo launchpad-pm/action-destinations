@@ -12,7 +12,7 @@ export interface Payload {
   /**
    * The properties to set on the group profile.
    */
-  traits?: {
+  traits: {
     [k: string]: unknown
   }
   /**

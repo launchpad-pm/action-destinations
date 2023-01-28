@@ -29,6 +29,7 @@ const groupIdentifyUser: ActionDefinition<Settings, Payload> = {
       label: 'Group Properties',
       type: 'object',
       description: 'The properties to set on the group profile.',
+      required: true,
       default: {
         '@path': '$.traits'
       }
@@ -52,7 +53,6 @@ const groupIdentifyUser: ActionDefinition<Settings, Payload> = {
     const apiServerUrl = getApiServerUrl(settings.apiRegion)
 
     const transformed_traits = {
-      ...payload.traits,
       ...Object.fromEntries(Object.entries(payload.traits).map(([k, v]) => [`group_${k}`, v]))
     }
 
@@ -66,7 +66,6 @@ const groupIdentifyUser: ActionDefinition<Settings, Payload> = {
       distinct_id: payload.userId,
       api_key: settings.apiSecret
     }
-    console.log(groupIdentifyEvent)
     const groupIdentifyResponse = await request(`${apiServerUrl}capture`, {
       method: 'post',
       json: groupIdentifyEvent

@@ -26,70 +26,6 @@ export interface Payload {
    */
   timestamp?: string | number
   /**
-   * The name of the mobile operating system or browser that the user is using.
-   */
-  os_name?: string
-  /**
-   * The version of the mobile operating system or browser the user is using.
-   */
-  os_version?: string
-  /**
-   * A unique identifier for the device the user is using.
-   */
-  device_id?: string
-  /**
-   * The type of the user's device.
-   */
-  device_type?: string
-  /**
-   * The name of the user's device.
-   */
-  device_name?: string
-  /**
-   * The device manufacturer that the user is using.
-   */
-  device_manufacturer?: string
-  /**
-   * The device model that the user is using.
-   */
-  device_model?: string
-  /**
-   * The current country of the user.
-   */
-  country?: string
-  /**
-   * The current region of the user.
-   */
-  region?: string
-  /**
-   * The language set by the user.
-   */
-  language?: string
-  /**
-   * The name of the SDK used to send events.
-   */
-  library_name?: string
-  /**
-   * The version of the SDK used to send events.
-   */
-  library_version?: string
-  /**
-   * The IP address of the user. This is only used for geolocation and won't be stored.
-   */
-  ip?: string
-  /**
-   * The full URL of the webpage on which the event is triggered.
-   */
-  url?: string
-  /**
-   * Referrer url
-   */
-  referrer?: string
-  /**
-   * User agent
-   */
-  userAgent?: string
-  /**
    * An object of key-value pairs that represent additional data to be sent along with the event.
    */
   properties?: {
@@ -106,16 +42,6 @@ export interface Payload {
    */
   context?: {
     [k: string]: unknown
-  }
-  /**
-   * UTM Tracking Properties
-   */
-  utm_properties?: {
-    utm_source?: string
-    utm_medium?: string
-    utm_campaign?: string
-    utm_term?: string
-    utm_content?: string
   }
   /**
    * Set as true to ensure Segment sends data to Launchpad in batches.

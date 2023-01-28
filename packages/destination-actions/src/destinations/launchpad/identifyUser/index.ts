@@ -38,6 +38,7 @@ const identifyUser: ActionDefinition<Settings, Payload> = {
     traits: {
       label: 'User Properties',
       type: 'object',
+      required: true,
       description: 'Properties to set on the user profile',
       default: {
         '@path': '$.traits'
@@ -57,7 +58,7 @@ const identifyUser: ActionDefinition<Settings, Payload> = {
           $anonymous_id: payload.anonymousId,
           segment_source_name: settings.sourceName
         },
-        distinct_id: payload.userId,
+        distinct_id: payload.anonymousId,
         api_key: settings.apiSecret
       }
       const identifyResponse = await request(`${apiServerUrl}capture`, {
@@ -98,8 +99,6 @@ const identifyUser: ActionDefinition<Settings, Payload> = {
         method: 'post',
         json: data
       })
-      console.log(data)
-
       return identifyResponse
     }
   }
